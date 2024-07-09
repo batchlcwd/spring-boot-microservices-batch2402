@@ -3,7 +3,6 @@ package encap;
 public class Samosa {
     private String type = "teekha";
 
-
     public String getType() {
         return type;
     }
