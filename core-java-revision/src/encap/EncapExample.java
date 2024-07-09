@@ -7,6 +7,7 @@ public class EncapExample {
         samosa.setType("Meetha");
         samosa.setType("Human Samosa");
         System.out.println(samosa.getType());
+        // "changes"
 
     }
 }
