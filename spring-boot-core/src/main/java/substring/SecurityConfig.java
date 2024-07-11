@@ -1,2 +1,7 @@
-package com.substring.spring.core.spring_boot_core;public class SecurityConfig {
+package substring;
+
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class SecurityConfig {
 }
