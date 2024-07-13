@@ -38,6 +38,8 @@ public class SpringBootCoreApplication
         System.out.println(bean1);
         System.out.println(bean2);
         System.out.println(bean3);
+
+        System.out.println(father.getTest());
     }
 
 }
