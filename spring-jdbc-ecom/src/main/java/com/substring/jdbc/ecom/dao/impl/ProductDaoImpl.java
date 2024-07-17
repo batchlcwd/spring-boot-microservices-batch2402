@@ -2,7 +2,6 @@ package com.substring.jdbc.ecom.dao.impl;
 
 import com.substring.jdbc.ecom.dao.ProductDao;
 import com.substring.jdbc.ecom.model.Product;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 

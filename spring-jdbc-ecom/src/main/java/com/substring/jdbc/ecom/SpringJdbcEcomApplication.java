@@ -1,15 +1,11 @@
 package com.substring.jdbc.ecom;
 
 import com.substring.jdbc.ecom.dao.ProductDao;
-import com.substring.jdbc.ecom.dao.impl.ProductDaoImpl;
 import com.substring.jdbc.ecom.model.Product;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import java.util.Random;
 import java.util.Scanner;
 
 @SpringBootApplication
