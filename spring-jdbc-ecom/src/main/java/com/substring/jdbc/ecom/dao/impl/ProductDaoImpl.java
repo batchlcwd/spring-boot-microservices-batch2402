@@ -25,27 +25,37 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public Product create(Product product) {
-        String query = "insert into products(id,title,description,price) values(?,?,?,?)";
+        String query = "insert into products(id,title,description,price) SELECT * FROM( SELECT ?,?,?,?) AS tmp WHERE NOT EXISTS (SELECT id FROM products WHERE id=?) LIMIT 1";
         int update = jdbcTemplate.update(
                 query,
                 product.getId(),
                 product.getTitle(),
                 product.getDescription(),
-                product.getPrice());
+                product.getPrice(), product.getId());
         System.out.println(update + "rows effected");
         return product;
     }
 
     @Override
-    public Product update(Product product, int productId) {
-        //TODO
-        return null;
+    public Product update(Product product, String description) {
+        String query = "update products set id = ?, title = ?, description = ?, price = ? where description =?";
+        int update = jdbcTemplate.update(
+                query,
+                product.getId(),
+                product.getTitle(),
+                product.getDescription(),
+                product.getPrice(), description);
+        System.out.println(update + "rows effected");
+        return product;
     }
 
     @Override
     public void delete(int productId) {
-
-        //TODO
+        String query = "delete from products where id =?";
+        int delete = jdbcTemplate.update(
+                query,
+                productId);
+        System.out.println(delete + "rows effected");
     }
 
     @Override

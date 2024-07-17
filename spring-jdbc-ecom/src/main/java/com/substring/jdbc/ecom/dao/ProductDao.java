@@ -12,7 +12,7 @@ public interface ProductDao {
 
 
     //update product
-    Product update(Product product, int productId);
+    Product update(Product product, String description);
 
     //delete product
     void delete(int productId);
