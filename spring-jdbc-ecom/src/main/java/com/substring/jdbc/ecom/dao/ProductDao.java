@@ -1,13 +1,13 @@
 package com.substring.jdbc.ecom.dao;
 
 import com.substring.jdbc.ecom.model.Product;
+import com.substring.jdbc.ecom.model.ProductWithCategory;
 
 import java.util.List;
 
 public interface ProductDao {
 
     //save product
-
     Product create(Product product);
 
 
@@ -28,4 +28,7 @@ public interface ProductDao {
 
     // get all product of category
     List<Product> getAllByCategory(int catId);
+
+//    get all products with category
+    List<ProductWithCategory> getAllWithCategory();
 }

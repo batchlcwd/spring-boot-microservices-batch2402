@@ -7,6 +7,8 @@ public class Product {
 
     private int price;
 
+    private int catId;
+
     public Product(int id, String title, String description, int price) {
         this.id = id;
         this.title = title;
@@ -47,6 +49,14 @@ public class Product {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getCatId() {
+        return catId;
+    }
+
+    public void setCatId(int catId) {
+        this.catId = catId;
     }
 
     @Override
