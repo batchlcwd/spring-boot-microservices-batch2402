@@ -28,6 +28,7 @@ public class SpringJdbcEcomApplication {
         // PRESS 1 for adding product
         // PRESS 2 for updating product
 
+        // assignment
     }
 
 }
