@@ -20,8 +20,15 @@ public class Product {
 
     private boolean isLive = false;
 
+//    @OneToOne
+//    private   Category category;
+
     // columns
 //    private  Date date;
+
+
+    @ManyToOne
+    private Category category;
 
 
     public Product(int productId, String title, String description, double price, boolean isLive) {

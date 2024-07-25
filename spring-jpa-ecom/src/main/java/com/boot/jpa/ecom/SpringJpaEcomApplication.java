@@ -8,8 +8,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+//@EnableJpaRepositories(basePackages = {"com.boot.jpa.ecom", "in.repositories"})
 public class SpringJpaEcomApplication implements CommandLineRunner {
 
 
@@ -38,7 +40,7 @@ public class SpringJpaEcomApplication implements CommandLineRunner {
 //        System.out.println("product created:");
 
 //        productService.all().forEach(System.out::println);
-        System.out.println(productService.byId(10));
+        System.out.println(productService.byId(1));
 
 
     }
