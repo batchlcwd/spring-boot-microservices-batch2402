@@ -40,7 +40,7 @@ public class SpringJpaEcomApplication implements CommandLineRunner {
 //        System.out.println("product created:");
 
 //        productService.all().forEach(System.out::println);
-        System.out.println(productService.byId(1));
+//        System.out.println(productService.byId(1));
 
 
     }

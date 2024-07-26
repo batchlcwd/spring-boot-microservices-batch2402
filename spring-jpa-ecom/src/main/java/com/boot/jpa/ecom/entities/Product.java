@@ -40,6 +40,7 @@ public class Product {
     }
 
     public Product() {
+
     }
 
     public int getProductId() {
@@ -91,5 +92,13 @@ public class Product {
                 ", price=" + price +
                 ", isLive=" + isLive +
                 '}';
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
