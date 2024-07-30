@@ -1,11 +1,13 @@
 package com.boot.jpa.ecom.entities;
 
+import com.boot.jpa.ecom.listeners.CategoryEventListener;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "jpa_category")
+@EntityListeners(CategoryEventListener.class)
 public class Category {
 
 
@@ -51,5 +53,8 @@ public class Category {
     public void setProductList(List<Product> productList) {
         this.productList = productList;
     }
+
+
+
 }/**/
 
