@@ -1,6 +1,7 @@
 package com.boot.jpa.ecom.services;
 
 import com.boot.jpa.ecom.entities.Category;
+import com.boot.jpa.ecom.repositories.CategoryRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,16 @@ public class CategoryService {
 
     private EntityManager entityManager;
 
+    private CategoryRepository repository;
 
 
-
-    public CategoryService(EntityManager entityManager) {
+    public CategoryService(EntityManager entityManager, CategoryRepository repository) {
         this.entityManager = entityManager;
+        this.repository = repository;
+    }
+
+    public List<Category> getAll(){
+        return repository.findAll();
     }
 
     public List<Category> getAllCategories() {

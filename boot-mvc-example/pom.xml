@@ -8,11 +8,11 @@
 		<version>3.3.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.boot.jpa.ecom</groupId>
-	<artifactId>spring-jpa-ecom</artifactId>
+	<groupId>com.mvc.example</groupId>
+	<artifactId>boot-mvc-example</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-jpa-ecom</name>
-	<description>This project use for learning jpa and hibernate</description>
+	<name>boot-mvc-example</name>
+	<description>This is spring mvc using boot</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -30,18 +30,11 @@
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
-
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>com.mysql</groupId>
-			<artifactId>mysql-connector-j</artifactId>
-			<scope>runtime</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -49,7 +42,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 	</dependencies>
 

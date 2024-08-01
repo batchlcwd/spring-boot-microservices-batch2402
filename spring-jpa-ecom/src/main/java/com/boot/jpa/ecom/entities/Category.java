@@ -1,6 +1,7 @@
 package com.boot.jpa.ecom.entities;
 
 import com.boot.jpa.ecom.listeners.CategoryEventListener;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class Category {
 //    private  Product product;
 
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "category",
             cascade = CascadeType.ALL,
