@@ -22,6 +22,12 @@ public class PageController {
     @RequestMapping("/home")
 //    @ResponseBody
     public List<String> home(){
+
+        if(true)
+        {
+            throw new RuntimeException("home page runtime exception");
+
+        }
         List<String> names=List.of("ankit","ravi","sanjay");
         return names;
     }
@@ -42,8 +48,6 @@ public class PageController {
 
     @RequestMapping("/category")
     public Category category(){
-
-
         //category
         Category category = new Category();
         category.setId(315235);

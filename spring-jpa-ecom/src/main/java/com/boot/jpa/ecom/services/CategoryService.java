@@ -1,9 +1,11 @@
 package com.boot.jpa.ecom.services;
 
 import com.boot.jpa.ecom.entities.Category;
+import com.boot.jpa.ecom.exception.ResourceNotFoundException;
 import com.boot.jpa.ecom.repositories.CategoryRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
+import org.hibernate.sql.ast.tree.cte.CteColumn;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,14 @@ public class CategoryService {
     private EntityManager entityManager;
 
     private CategoryRepository repository;
+
+    public Category create(Category category){
+        return repository.save(category);
+    }
+
+    public Category getById(int catId){
+        return this.repository.findById(catId).orElseThrow(() -> new ResourceNotFoundException("category not found"));
+    }
 
 
     public CategoryService(EntityManager entityManager, CategoryRepository repository) {

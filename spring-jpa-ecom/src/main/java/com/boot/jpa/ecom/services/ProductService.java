@@ -2,6 +2,7 @@ package com.boot.jpa.ecom.services;
 
 import com.boot.jpa.ecom.entities.Category;
 import com.boot.jpa.ecom.entities.Product;
+import com.boot.jpa.ecom.exception.ResourceNotFoundException;
 import com.boot.jpa.ecom.repositories.ProductRepository;
 import com.boot.jpa.ecom.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class ProductService {
 
 
     public void delete(int productId) {
-        Product product = productRepository.findById(productId).get();
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product not found !!"));
         productRepository.delete(product);
     }
 
