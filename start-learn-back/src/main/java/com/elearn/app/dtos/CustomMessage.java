@@ -1,2 +1,11 @@
-package com.elearn.app.dtos;public class CustomMessage {
+package com.elearn.app.dtos;
+
+import lombok.Data;
+
+@Data
+public class CustomMessage {
+
+    private String message;
+
+    private boolean success;
 }
