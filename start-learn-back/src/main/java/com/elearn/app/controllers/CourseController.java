@@ -5,5 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/courses")
-public class CourseController {
+public class CourseController
+{
+
 }
