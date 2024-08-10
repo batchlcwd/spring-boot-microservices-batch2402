@@ -41,8 +41,18 @@ public class Course {
     private List<Video> videos = new ArrayList<>();
 
     //
-    @ManyToMany
-    private  List<Category> categoryList=new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Category> categoryList = new ArrayList<>();
+
+    public void addCategory(Category category) {
+        categoryList.add(category);
+        category.getCourses().add(this);
+    }
+
+    public void removeCategory(Category category) {
+        categoryList.remove(category);
+        category.getCourses().remove(this);
+    }
 
 
 }

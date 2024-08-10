@@ -44,6 +44,7 @@ public class CourseDto
 
     private String banner;
 
+//    private  String categoryId;
 
     //    videos
 

@@ -29,8 +29,28 @@ public class Category {
 
 //
 
-    @ManyToMany(mappedBy = "categoryList")
-    private List<Course> courses=new ArrayList<>();
+    @ManyToMany(
+            mappedBy = "categoryList",
+            cascade = CascadeType.ALL
+
+    )
+    private List<Course> courses = new ArrayList<>();
+
+    public void addCourse(Course course) {
+
+        //list mein add kiya hai course
+        courses.add(course);
+
+        // course ki category list mein add kiya current category
+        course.getCategoryList().add(this);
+
+
+    }
+
+    public void removeCourse(Course course) {
+        courses.remove(course);
+        course.getCategoryList().remove(this);
+    }
 
 
 }

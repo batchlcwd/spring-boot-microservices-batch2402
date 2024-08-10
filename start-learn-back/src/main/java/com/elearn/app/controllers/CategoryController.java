@@ -2,6 +2,7 @@ package com.elearn.app.controllers;
 
 import com.elearn.app.config.AppConstants;
 import com.elearn.app.dtos.CategoryDto;
+import com.elearn.app.dtos.CourseDto;
 import com.elearn.app.dtos.CustomMessage;
 import com.elearn.app.dtos.CustomPageResponse;
 import com.elearn.app.entities.Category;
@@ -96,6 +97,25 @@ public class CategoryController {
             @RequestBody CategoryDto categoryDto
     ) {
         return categoryService.update(categoryDto, categoryId);
+    }
+
+
+    @PostMapping("/{categoryId}/courses/{courseId}")
+    public ResponseEntity<CustomMessage> addCourseToCategory(
+            @PathVariable String categoryId,
+            @PathVariable String courseId
+    ) {
+        categoryService.addCourseToCategory(categoryId, courseId);
+        CustomMessage customMessage = new CustomMessage();
+        customMessage.setMessage("Category Updated !!");
+        customMessage.setSuccess(true);
+        return ResponseEntity.ok(customMessage);
+    }
+
+    @GetMapping("/{categoryId}/courses")
+    public ResponseEntity<List<CourseDto>> getCoursesOfCategory(
+            @PathVariable String categoryId    ){
+        return ResponseEntity.ok(categoryService.getCoursesOfCat(categoryId));
     }
 
 

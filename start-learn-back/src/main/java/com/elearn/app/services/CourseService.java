@@ -2,20 +2,33 @@ package com.elearn.app.services;
 
 import com.elearn.app.dtos.CourseDto;
 import com.elearn.app.entities.Course;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface CourseService {
+    CourseDto createCourse(CourseDto courseDto);
 
-    CourseDto create(CourseDto courseDto);
+    CourseDto updateCourse(String id, CourseDto courseDto);
 
-    List<CourseDto> getAll();
+    CourseDto getCourseById(String id);
 
-    CourseDto update(CourseDto dto, String courseId);
+    Page<CourseDto> getAllCourses(Pageable pageable);
 
-    void delete(String courseId);
+    void deleteCourse(String id);
 
-    List<CourseDto> searchByTitle(String titleKeyword);
+    List<CourseDto> searchCourses(String keyword);
+
+//    CourseDto create(CourseDto courseDto);
+//
+//    List<CourseDto> getAll();
+//
+//    CourseDto update(CourseDto dto, String courseId);
+//
+//    void delete(String courseId);
+//
+//    List<CourseDto> searchByTitle(String titleKeyword);
 
 
 }
