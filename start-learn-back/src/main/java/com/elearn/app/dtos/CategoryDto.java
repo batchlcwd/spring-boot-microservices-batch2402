@@ -1,6 +1,7 @@
 package com.elearn.app.dtos;
 
 import com.elearn.app.entities.Course;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -33,6 +34,7 @@ public class CategoryDto {
 //    @Pattern(regexp = "")
     private String desc;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy hh:mm:ss a",timezone = "IST")
     private Date addedDate;
 
 //

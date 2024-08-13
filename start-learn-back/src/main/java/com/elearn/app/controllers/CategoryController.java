@@ -7,6 +7,7 @@ import com.elearn.app.dtos.CustomMessage;
 import com.elearn.app.dtos.CustomPageResponse;
 import com.elearn.app.entities.Category;
 import com.elearn.app.services.CategoryService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,7 +81,8 @@ public class CategoryController {
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<CustomMessage> delete(
             @PathVariable String categoryId
-    ) {
+    )
+    {
         categoryService.delete(categoryId);
         CustomMessage customMessage = new CustomMessage();
         customMessage.setMessage("Category deleted !!");
@@ -114,7 +116,7 @@ public class CategoryController {
 
     @GetMapping("/{categoryId}/courses")
     public ResponseEntity<List<CourseDto>> getCoursesOfCategory(
-            @PathVariable String categoryId    ){
+            @PathVariable String categoryId  ){
         return ResponseEntity.ok(categoryService.getCoursesOfCat(categoryId));
     }
 

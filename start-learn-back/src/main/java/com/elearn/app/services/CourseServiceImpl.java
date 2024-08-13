@@ -1,17 +1,25 @@
 package com.elearn.app.services;
 
+import com.elearn.app.config.AppConstants;
 import com.elearn.app.dtos.CourseDto;
+import com.elearn.app.dtos.ResourceContentType;
 import com.elearn.app.entities.Course;
 import com.elearn.app.exceptions.ResourceNotFoundException;
 import com.elearn.app.repositories.CourseRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.plaf.IconUIResource;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -30,6 +38,8 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private  FileService fileService;
     public CourseServiceImpl(CourseRepo courseRepository, ModelMapper modelMapper) {
         this.courseRepository = courseRepository;
         this.modelMapper = modelMapper;
@@ -108,5 +118,26 @@ public class CourseServiceImpl implements CourseService {
         return courses.stream()
                 .map(course -> modelMapper.map(course, CourseDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public CourseDto saveBanner(MultipartFile file, String courseId) throws IOException {
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new ResourceNotFoundException("Course not found!!"));
+        String filePath = fileService.save(file, AppConstants.COURSE_BANNER_UPLOAD_DIR, file.getOriginalFilename());
+        course.setBanner(filePath);
+        course.setBannerContentType(file.getContentType());
+        return modelMapper.map( courseRepository.save(course),CourseDto.class);
+    }
+
+    @Override
+    public ResourceContentType getCourseBannerById(String courseId) {
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new ResourceNotFoundException("Course not found!!"));
+        String bannerPath = course.getBanner();
+        Path path = Paths.get(bannerPath);
+        Resource resource=new FileSystemResource(path);
+        ResourceContentType resourceContentType = new ResourceContentType();
+        resourceContentType.setResource(resource);
+        resourceContentType.setContentType(course.getBannerContentType());
+        return resourceContentType;
     }
 }

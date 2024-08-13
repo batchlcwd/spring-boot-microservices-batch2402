@@ -2,6 +2,8 @@ package com.elearn.app.dtos;
 
 import com.elearn.app.entities.Category;
 import com.elearn.app.entities.Video;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -19,8 +21,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseDto
-{
+public class CourseDto {
 
 
     private String id;
@@ -29,7 +30,8 @@ public class CourseDto
 
     private String shortDesc;
 
-
+    //    @JsonIgnore
+    @JsonProperty("long_description")
     private String longDesc;
 
     private double price;
@@ -52,6 +54,12 @@ public class CourseDto
 
     //
 
-    private  List<CategoryDto> categoryList=new ArrayList<>();
+    private List<CategoryDto> categoryList = new ArrayList<>();
+
+    public String getBannerUrl() {
+
+        return "http://localhost:8081/api/v1/courses/" + id + "/banners";
+
+    }
 
 }

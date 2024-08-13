@@ -33,7 +33,10 @@ public class Course {
 
     // add your fields
 
+    //is image field
     private String banner;
+
+    private  String bannerContentType;
 
 
     //    videos
