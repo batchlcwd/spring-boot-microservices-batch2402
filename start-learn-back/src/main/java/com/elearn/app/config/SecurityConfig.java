@@ -7,11 +7,55 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity(debug = true)
 public class SecurityConfig {
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+//
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//
+//
+//        InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
+//
+////        service ke ander create user
+//
+//        userDetailsManager.createUser(
+//                User.withDefaultPasswordEncoder()
+//                        .username("ram")
+//                        .password("ram")
+//                        .roles("ADMIN")
+//                        .build()
+//        );
+//
+//        userDetailsManager.createUser(
+//                User.withDefaultPasswordEncoder()
+//                        .username("shyam")
+//                        .password("ram")
+//                        .roles("USER")
+//                        .build()
+//        );
+//
+//
+//        return userDetailsManager;
+//
+//
+//    }
+//
+//
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -29,7 +73,8 @@ public class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests(auth -> {
             auth.requestMatchers(HttpMethod.GET, "/api/v1/categories").permitAll()
-                        .requestMatchers("/client-login", "/client-login-process").permitAll()
+                    .requestMatchers("/client-login", "/client-login-process").permitAll()
+                    .requestMatchers(HttpMethod.POST,"/api/v1/users").permitAll()
 //                    .requestMatchers(HttpMethod.GET, "/api/v1/courses").permitAll()
                     .anyRequest()
                     .authenticated();
@@ -45,14 +90,19 @@ public class SecurityConfig {
                     form.passwordParameter("userpassword");
                     form.loginProcessingUrl("/client-login-process");
                     form.successForwardUrl("/success");
+
 //                    form.successHandler();
 //                    form.failureHandler();
 
                 }
 
         );
+        httpSecurity.logout(logout -> {
+            logout.logoutUrl("/logout");
+        });
 
-//        httpSecurity.httpBasic(Customizer.withDefaults());
+
+        httpSecurity.httpBasic(Customizer.withDefaults());
 //        //
 //
 //        httpSecurity.cors()
