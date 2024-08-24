@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -41,5 +43,7 @@ public class UserDto {
     private String profilePath;
 
     private String recentOTP;
+
+    private Set<RoleDto> roles=new HashSet<>();
 
 }

@@ -14,5 +14,7 @@ public class AppConstants {
 
 
     public static final String ROLE_ADMIN="ROLE_ADMIN";
-    public static  final String ROLE_GUST="ROLE_GUST";
+    public static  final String ROLE_GUST="ROLE_GUEST";
+
+    public static final String DEFAULT_PROFILE_PIC_PATH="uploads/default.jpg";
 }
