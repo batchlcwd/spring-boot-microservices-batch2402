@@ -6,9 +6,13 @@ import com.elearn.app.entities.User;
 import com.elearn.app.repositories.RoleRepo;
 import com.elearn.app.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
@@ -17,8 +21,11 @@ import java.util.UUID;
 @SpringBootApplication
 public class StartLearnBackApplication implements CommandLineRunner {
 
-    public static void main(String[] args) {
-        SpringApplication.run(StartLearnBackApplication.class, args);
+
+
+    public static void main(String[] args)
+    {
+       SpringApplication.run(StartLearnBackApplication.class, args);
     }
 
 
@@ -31,8 +38,13 @@ public class StartLearnBackApplication implements CommandLineRunner {
     @Autowired
     private RoleRepo roleRepo;
 
+
+
     @Override
     public void run(String... args) throws Exception {
+
+
+
 
 
         Role role1 = new Role();

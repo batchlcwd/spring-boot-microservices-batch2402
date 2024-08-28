@@ -1,15 +1,19 @@
-package com.elearn.app.config;
+package com.elearn.app.config.security;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
@@ -26,13 +31,25 @@ public class SecurityConfig {
 
     private AuthenticationEntryPoint authenticationEntryPoint;
 
-    public SecurityConfig(AuthenticationEntryPoint authenticationEntryPoint) {
+    private JwtAuthenticationFilter authenticationFilter;
+
+
+    public SecurityConfig(AuthenticationEntryPoint authenticationEntryPoint, JwtAuthenticationFilter authenticationFilter) {
         this.authenticationEntryPoint = authenticationEntryPoint;
+        this.authenticationFilter = authenticationFilter;
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration configuration
+    ) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 
 //
@@ -88,13 +105,19 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
 
         httpSecurity.authorizeHttpRequests(auth ->
-                auth.requestMatchers(HttpMethod.GET, "/api/v1/**").hasAnyRole("GUEST", "ADMIN")
+                auth
+                        .requestMatchers("/api/v1/auth/login").permitAll().
+                        requestMatchers(HttpMethod.GET, "/api/v1/**").hasAnyRole("GUEST", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/v1/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/**").hasRole("ADMIN")
-//                        .requestMatchers("/all").permitAll()
+
                         .anyRequest()
                         .authenticated());
+
+
+        httpSecurity.sessionManagement(e -> e.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        httpSecurity.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 //            auth.requestMatchers(HttpMethod.GET, "/api/v1/categories").permitAll()
 //                    .requestMatchers("/client-login", "/client-login-process").permitAll()
@@ -106,32 +129,32 @@ public class SecurityConfig {
 
 //);
 
+//
+//        httpSecurity.formLogin(
+//                form ->
+//
+//                {
+//                    form.loginPage("/client-login");
+//                    form.usernameParameter("username");
+//                    form.passwordParameter("userpassword");
+//                    form.loginProcessingUrl("/client-login-process");
+//                    form.successForwardUrl("/success");
+//
+////                    form.successHandler();
+////                    form.failureHandler();
+//
+//                }
+//
+//        );
+//
+//        httpSecurity.logout(logout ->
+//
+//        {
+//            logout.logoutUrl("/logout");
+//        });
 
-        httpSecurity.formLogin(
-                form ->
 
-                {
-                    form.loginPage("/client-login");
-                    form.usernameParameter("username");
-                    form.passwordParameter("userpassword");
-                    form.loginProcessingUrl("/client-login-process");
-                    form.successForwardUrl("/success");
-
-//                    form.successHandler();
-//                    form.failureHandler();
-
-                }
-
-        );
-
-        httpSecurity.logout(logout ->
-
-        {
-            logout.logoutUrl("/logout");
-        });
-
-
-        httpSecurity.httpBasic(hbasic-> hbasic.authenticationEntryPoint(authenticationEntryPoint));
+//        httpSecurity.httpBasic(hbasic-> hbasic.authenticationEntryPoint(authenticationEntryPoint));
 
 
 //        //

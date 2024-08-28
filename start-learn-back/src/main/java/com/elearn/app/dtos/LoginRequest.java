@@ -1,2 +1,12 @@
-package com.elearn.app.dtos;public class LoginRequest {
+package com.elearn.app.dtos;
+
+import lombok.Data;
+
+@Data
+public class LoginRequest {
+
+
+    private  String email;
+    private  String password;
+
 }

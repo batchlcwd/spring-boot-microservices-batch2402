@@ -1,5 +1,6 @@
 package com.elearn.app;
 
+import com.elearn.app.config.security.JwtUtil;
 import com.elearn.app.repositories.CategoryRepo;
 import com.elearn.app.repositories.CourseRepo;
 import com.elearn.app.services.CategoryService;
@@ -43,6 +44,24 @@ class StartLearnBackApplicationTests {
 
 		int size1 = courseRepo.findById("1fe72eb7-173c-42df-9ee3-afee75ae68b4").get().getCategoryList().size();
 		System.out.println(size1);
+	}
+
+	@Autowired
+	private JwtUtil util;
+	@Test
+	public void testJwt(){
+
+
+		System.out.println("testing jwt");
+
+		String token = util.generateToken("Aayush Sharma");
+		System.out.println(token);
+
+		System.out.println(util.validateToken(token,"Aayush Sharma"));
+
+		System.out.println(util.extractUsername(token));
+
+
 	}
 
 }

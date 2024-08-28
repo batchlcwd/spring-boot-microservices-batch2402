@@ -1,5 +1,6 @@
 package com.elearn.app.controllers;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 
 public class TestController {
+
+    private ApplicationContext context;
+
+    public TestController(ApplicationContext context) {
+        this.context = context;
+    }
 
     @PostMapping("/test")
     @PreAuthorize("hasRole('ADMIN')")
@@ -25,7 +32,8 @@ public class TestController {
     @GetMapping("/all")
 
     public  String all(){
-        return "open api endpoint";
+        System.out.println(context.getDisplayName());
+        return "open api endpoint" ;
     }
 
 }
