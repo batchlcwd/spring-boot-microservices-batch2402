@@ -1,6 +1,7 @@
 package com.elearn.app.config;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,12 +15,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity(debug = true)
 public class SecurityConfig {
+
+
+    private AuthenticationEntryPoint authenticationEntryPoint;
+
+    public SecurityConfig(AuthenticationEntryPoint authenticationEntryPoint) {
+        this.authenticationEntryPoint = authenticationEntryPoint;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -122,12 +131,17 @@ public class SecurityConfig {
         });
 
 
-        httpSecurity.httpBasic(Customizer.withDefaults());
+        httpSecurity.httpBasic(hbasic-> hbasic.authenticationEntryPoint(authenticationEntryPoint));
 
 
 //        //
 //
 //        httpSecurity.cors()
+
+//        httpSecurity.exceptionHandling(ex -> {
+//            ex.authenticationEntryPoint(authenticationEntryPoint);
+//        });
+
 //
 
 
