@@ -7,6 +7,9 @@ import com.elearn.app.dtos.ResourceContentType;
 import com.elearn.app.entities.Course;
 import com.elearn.app.services.CourseService;
 import com.elearn.app.services.FileService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,13 +39,28 @@ public class CourseController {
         this.courseService = courseService;
     }
 
+    @Operation(
+            summary = "Create New Course ",
+            description = "Pass new course information to create new course"
+
+    )
+    @ApiResponse(responseCode = "201", description = "Course Created Success")
+    @ApiResponse(responseCode = "501", description = "Internal server error , course not created")
     @PostMapping
     public ResponseEntity<CourseDto> createCourse(@RequestBody CourseDto courseDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(courseService.createCourse(courseDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CourseDto> updateCourse(@PathVariable String id, @RequestBody CourseDto courseDto) {
+    @Operation(
+            summary = "Update course",
+            description = "Pass updated course information to update course"
+
+    )
+
+    public ResponseEntity<CourseDto> updateCourse(
+            @Parameter(description = "Course id which is to update")
+            @PathVariable String id, @RequestBody CourseDto courseDto) {
         return ResponseEntity.ok(courseService.updateCourse(id, courseDto));
     }
 
@@ -86,8 +104,7 @@ public class CourseController {
 
         if (contentType == null) {
             contentType = "image/png";
-        } else if (contentType.equalsIgnoreCase("image/png") || contentType.equalsIgnoreCase("image/jpeg"))
-        {
+        } else if (contentType.equalsIgnoreCase("image/png") || contentType.equalsIgnoreCase("image/jpeg")) {
         } else {
             CustomMessage customMessage = new CustomMessage();
             customMessage.setSuccess(false);

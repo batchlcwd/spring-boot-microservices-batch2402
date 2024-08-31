@@ -54,7 +54,7 @@ public class AuthController {
 
 
         } catch (AuthenticationException ex) {
-            throw new BadCredentialsException("Invalid User Details !!");
+            throw new BadCredentialsException("Incorrect email or password !!");
         }
 
         //authenticated
