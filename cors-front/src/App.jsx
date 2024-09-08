@@ -34,6 +34,21 @@ function App() {
       <p className="read-the-docs">
         Developed by Ayush Sharma & Yatendra Kumar : Fullstack Developer
       </p>
+      <div>
+        <h1>Akash Singh</h1>
+        <h1>Akash singh is good python develpoer.</h1>
+        <img src={reactLogo} alt="React Logo" />
+        <img src={viteLogo} alt="Vite Logo" />
+        <p className="read-the-docs">
+          Developed by Akash Singh : Fullstack Developer
+          <a href="https://github.com/akashsingh1998/cors-example">Github</a>
+
+        </p>
+
+        
+
+
+      </div>
     </>
   );
 }

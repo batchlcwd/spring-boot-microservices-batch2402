@@ -18,4 +18,12 @@ public class PhotosController {
         return "photos";
     }
 
+    @RequestMapping("/albums")
+    public String albums(){
+        return "albums";
+
+    }
+
+  
+
 }
