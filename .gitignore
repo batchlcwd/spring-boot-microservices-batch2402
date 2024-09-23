@@ -1,0 +1,3 @@
+microservices/mongo-data/* 
+microservices/mysql-data/* 
+microservices/postgres-data/* 
