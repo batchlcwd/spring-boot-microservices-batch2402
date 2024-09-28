@@ -47,7 +47,8 @@ public class VideoController {
         return ResponseEntity.ok(videoService.searchVideos(keyword));
     }
 
-    // get all video of the course
+    // get all videos of the course
+
 
     @GetMapping("/course/{courseId}")
     public List<VideoDto> getAllVideosOfCourse(@PathVariable String courseId) {

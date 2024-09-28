@@ -23,6 +23,9 @@ public class VideoServiceImpl implements  VideoService{
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private  CourseService courseService;
+
     @Override
     public VideoDto createVideo(VideoDto videoDto) {
         videoDto.setId(UUID.randomUUID().toString());
@@ -50,7 +53,13 @@ public class VideoServiceImpl implements  VideoService{
     public VideoDto getVideoById(String videoId) {
         Video video = videoRepository.findById(videoId)
                 .orElseThrow(() -> new RuntimeException("Video not found"));
-        return modelMapper.map(video, VideoDto.class);
+
+        VideoDto videoDto = modelMapper.map(video, VideoDto.class);
+        videoDto.setCourse(courseService.getCourseById(videoDto.getCourseId()));
+
+        return videoDto;
+
+
     }
 
     @Override
@@ -83,6 +92,6 @@ public class VideoServiceImpl implements  VideoService{
 
     @Override
     public List<VideoDto> getVideoOfCourse(String courseId) {
-        return videoRepository.findByCourseId(courseId);
+        return videoRepository.findByCourseId(courseId).stream().map(video-> modelMapper.map(video,VideoDto.class)).collect(Collectors.toList());
     }
 }

@@ -1,4 +1,4 @@
-package com.service.course.dto;
+package com.service.video.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -46,10 +46,6 @@ public class CourseDto {
 
 
     private String categoryId;
-
-    private  CategoryDto categoryDto;
-
-    private List<VideoDto> videos;
 
 
 }

@@ -4,6 +4,7 @@ import com.service.course.config.AppConstants;
 import com.service.course.dto.CategoryDto;
 import com.service.course.dto.CourseDto;
 import com.service.course.dto.ResourceContentType;
+import com.service.course.dto.VideoDto;
 import com.service.course.entities.Course;
 import com.service.course.exception.ResourceNotFoundException;
 import com.service.course.repositories.CourseRepo;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -41,15 +43,18 @@ public class CourseServiceImpl implements CourseService {
 
     private RestTemplate restTemplate;
 
+    private WebClient webClient;
+
 
     @Autowired
     private FileService fileService;
 
-    public CourseServiceImpl(CourseRepo courseRepository, ModelMapper modelMapper, RestTemplate restTemplate, FileService fileService) {
+    public CourseServiceImpl(WebClient webClient, CourseRepo courseRepository, ModelMapper modelMapper, RestTemplate restTemplate, FileService fileService) {
         this.courseRepository = courseRepository;
         this.modelMapper = modelMapper;
         this.restTemplate = restTemplate;
         this.fileService = fileService;
+        this.webClient = webClient;
     }
 
     @Override
@@ -88,7 +93,10 @@ public class CourseServiceImpl implements CourseService {
         // get category detail of the course
 
         CourseDto courseDto = modelMapper.map(course, CourseDto.class);
+        //load category of the video [Category Service]
         courseDto.setCategoryDto(getCategoryOfCourse(course.getCategoryId()));
+        //load[Video Services] video services to load videos of this course
+        courseDto.setVideos(getVideosOfCourse(course.getId()));
         return courseDto;
     }
 
@@ -103,6 +111,8 @@ public class CourseServiceImpl implements CourseService {
                 map(course -> {
                     CourseDto dto = modelMapper.map(course, CourseDto.class);
                     dto.setCategoryDto(getCategoryOfCourse(dto.getCategoryId()));
+                    //load videos of all current course [Video Service]
+                    dto.setVideos(getVideosOfCourse(dto.getId()));
                     return dto;
                 })
                 .collect(Collectors.toList());
@@ -155,6 +165,8 @@ public class CourseServiceImpl implements CourseService {
         return courses.stream().map(course -> {
             CourseDto dto = modelMapper.map(course, CourseDto.class);
             dto.setCategoryDto(getCategoryOfCourse(dto.getCategoryId()));
+            //load videos of searched course[Video Service]
+            dto.setVideos(getVideosOfCourse(dto.getId()));
             return dto;
 
         }).collect(Collectors.toList());
@@ -181,6 +193,8 @@ public class CourseServiceImpl implements CourseService {
         return resourceContentType;
     }
 
+    // api call for loading category using category id
+//    [Rest Template]
     public CategoryDto getCategoryOfCourse(String categoryId) {
         try {
             ResponseEntity<CategoryDto> exchange = restTemplate.exchange(AppConstants.CATEGORY_SERVICE_BASE_URL + "/categories/" + categoryId, HttpMethod.GET, null, CategoryDto.class);
@@ -196,4 +210,17 @@ public class CourseServiceImpl implements CourseService {
             return null;
         }
     }
-}
+
+        // call video-service to get videos of course
+        public List<VideoDto> getVideosOfCourse(String courseId)
+        {
+            return webClient.
+                    get()
+                    .uri(AppConstants.VIDEO_SERVICE_BASE_URL + "/videos/course/{id}", courseId)
+                    .retrieve()
+                    .bodyToFlux(VideoDto.class)
+                    .collectList()
+                    .block();
+        }
+    }
+

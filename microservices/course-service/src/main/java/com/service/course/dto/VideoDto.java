@@ -1,4 +1,4 @@
-package com.service.video.dto;
+package com.service.course.dto;
 
 import lombok.Data;
 
@@ -10,5 +10,4 @@ public class VideoDto {
     private String filePath;
     private String contentType;
     private  String courseId;
-    private  CourseDto course;
 }
