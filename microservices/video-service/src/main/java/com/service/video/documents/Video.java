@@ -8,12 +8,15 @@ import java.util.Date;
 
 @Document
 @Data
-public class Video {
+public class Video
+{
     @Id
     private String id;
     private String title;
     private String desc;
     private String filePath;
     private String contentType;
+
+    private  String courseId;
 
 }

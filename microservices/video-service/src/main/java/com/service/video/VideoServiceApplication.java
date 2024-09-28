@@ -1,7 +1,6 @@
 package com.service.video;
 
-import com.service.video.documents.Video;
-import com.service.video.repositories.VideoRepository;
+import com.service.video.repositories.VideoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,7 +14,7 @@ public class VideoServiceApplication implements CommandLineRunner {
     }
 
     @Autowired
-    private VideoRepository videoRepository;
+    private VideoRepo videoRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -27,8 +26,8 @@ public class VideoServiceApplication implements CommandLineRunner {
 //
 //        Video save = videoRepository.save(video);
 //        System.out.println("Video saved with id: " + save.getId());
-
-        videoRepository.findAll().forEach(System.out::println);
+//
+//        videoRepository.findAll().forEach(System.out::println);
 
     }
 }
