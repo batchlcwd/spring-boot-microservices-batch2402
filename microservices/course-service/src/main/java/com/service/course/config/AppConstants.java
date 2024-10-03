@@ -17,6 +17,6 @@ public class AppConstants {
 
     public static final String DEFAULT_PROFILE_PIC_PATH="uploads/default.jpg";
 
-    public static final String CATEGORY_SERVICE_BASE_URL="http://localhost:9091/api/v1";
-    public  static final String VIDEO_SERVICE_BASE_URL="http://localhost:9093/api/v1";
+    public static final String CATEGORY_SERVICE_BASE_URL="http://category-service/api/v1";
+    public  static final String VIDEO_SERVICE_BASE_URL="http://video-service/api/v1";
 }

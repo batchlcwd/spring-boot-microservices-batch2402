@@ -43,13 +43,13 @@ public class CourseServiceImpl implements CourseService {
 
     private RestTemplate restTemplate;
 
-    private WebClient webClient;
+    private WebClient.Builder webClient;
 
 
     @Autowired
     private FileService fileService;
 
-    public CourseServiceImpl(WebClient webClient, CourseRepo courseRepository, ModelMapper modelMapper, RestTemplate restTemplate, FileService fileService) {
+    public CourseServiceImpl(WebClient.Builder webClient, CourseRepo courseRepository, ModelMapper modelMapper, RestTemplate restTemplate, FileService fileService) {
         this.courseRepository = courseRepository;
         this.modelMapper = modelMapper;
         this.restTemplate = restTemplate;
@@ -214,7 +214,7 @@ public class CourseServiceImpl implements CourseService {
         // call video-service to get videos of course
         public List<VideoDto> getVideosOfCourse(String courseId)
         {
-            return webClient.
+            return webClient.build().
                     get()
                     .uri(AppConstants.VIDEO_SERVICE_BASE_URL + "/videos/course/{id}", courseId)
                     .retrieve()
