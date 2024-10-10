@@ -127,13 +127,19 @@ public class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests(auth ->
                 auth
-                        .requestMatchers("/doc.html","/v3/api-docs/**","/swagger-ui/**","/swagger-resources/**").permitAll()
-                        .requestMatchers("/api/v1/auth/login").permitAll().
-                        requestMatchers(HttpMethod.GET, "/api/v1/**").hasAnyRole("GUEST", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/v1/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/**").hasRole("ADMIN")
-
+                        .requestMatchers("/doc.html", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
+                        .requestMatchers("/api/v1/auth/login").permitAll()
+//                        requestMatchers(HttpMethod.GET, "/api/v1/**").hasAnyRole("GUEST", "ADMIN")
+//                        .requestMatchers(HttpMethod.POST, "/api/v1/**").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.PUT, "/api/v1/**").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.DELETE, "/api/v1/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/courses/**").permitAll().
+                        requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/videos/**").permitAll()
+                        .requestMatchers("/api/v1/courses/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/categories/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/users/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/videos/**").hasRole("ADMIN")
                         .anyRequest()
                         .authenticated());
 
