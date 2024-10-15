@@ -9,6 +9,8 @@ spring:
       host: localhost
       port: 27017
       database: videodb
+  config:
+    import: "configserver:http://localhost:9094/"
 
 eureka:
   client:
@@ -27,3 +29,4 @@ info:
     name: "video-service"
     description:  "This is video service"
     version: "1.0"
+

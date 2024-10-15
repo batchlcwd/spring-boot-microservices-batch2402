@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: "configserver:http://localhost:9094/"
   application:
     name: course-service
   datasource:
@@ -9,6 +11,11 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: guest
+    password: guest
 server:
   port: 9092
 eureka:
@@ -26,5 +33,7 @@ management:
 info:
   app:
     name: "course-service"
-    description:  "This is course service"
+    description: "This is course service"
     version: "1.0"
+
+

@@ -15,14 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/categories")public class CategoryController {
 
     private CategoryService categoryService;
-
     //category: create
-
-
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
-
     @PostMapping
     public ResponseEntity<?> create(
             @Valid @RequestBody CategoryDto categoryDto
@@ -35,7 +31,6 @@ import org.springframework.web.bind.annotation.*;
 //                    "Invalid  Data"
 //            );
 //        }
-
         CategoryDto createdDto = categoryService.insert(categoryDto);
         //201[Created]
         return ResponseEntity
@@ -46,8 +41,6 @@ import org.springframework.web.bind.annotation.*;
 
 
     // category get:all
-
-
     @GetMapping
     public CustomPageResponse<CategoryDto> getAll(
             @RequestParam(value = "pageNumber", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int pageNumber,
@@ -57,10 +50,7 @@ import org.springframework.web.bind.annotation.*;
         return categoryService.getAll(pageNumber, pageSize, sortBy);
 
     }
-
-
     // single category
-
     @GetMapping("/{categoryId}")
     public CategoryDto getSingle(
             @PathVariable String categoryId
@@ -70,7 +60,6 @@ import org.springframework.web.bind.annotation.*;
 
 
     //  delete category
-
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<CustomMessage> delete(
             @PathVariable String categoryId
