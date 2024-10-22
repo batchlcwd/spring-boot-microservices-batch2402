@@ -7,6 +7,13 @@ spring:
         locator:
           enabled: false
           lower-case-service-id: true
+  circuitbreaker:
+    resilience4j:
+      enabled: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 server:
   port: 9090
@@ -34,3 +41,12 @@ info:
     version: "1.0"
 
 #    spring cloud property
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 10
+        permitted-number-of-calls-in-half-open-state: 2
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 1000
+

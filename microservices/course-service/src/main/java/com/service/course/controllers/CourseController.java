@@ -4,6 +4,7 @@ import com.service.course.dto.CourseDto;
 import com.service.course.dto.CustomMessage;
 import com.service.course.dto.ResourceContentType;
 import com.service.course.services.CourseService;
+import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -48,10 +49,21 @@ public class CourseController {
     }
 
 
+
+
+    @Retry(name = "getSingleCourseRetry",fallbackMethod = "singleCourseRetryFallback")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
     public ResponseEntity<CourseDto> getCourseById(@PathVariable String id) {
         return ResponseEntity.ok(courseService.getCourseById(id));
+    }
+
+
+    public ResponseEntity<CourseDto> singleCourseRetryFallback(Throwable ex){
+        CourseDto courseDto = new CourseDto();
+        courseDto.setTitle("This is dummy course");
+        courseDto.setShortDesc("This is dummy course return while fallback");
+        return  ResponseEntity.ok(courseDto);
     }
 
     @GetMapping

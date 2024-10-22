@@ -1,6 +1,10 @@
 server:
   port: 9093
 spring:
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
   application:
     name: video-service
 
@@ -29,4 +33,15 @@ info:
     name: "video-service"
     description:  "This is video service"
     version: "1.0"
+
+
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 10
+        permitted-number-of-calls-in-half-open-state: 2
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 1000
 

@@ -2,6 +2,7 @@ package com.service.video.controllers;
 
 import com.service.video.dto.VideoDto;
 import com.service.video.services.VideoService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import java.util.List;
 public class VideoController {
     @Autowired
     private VideoService videoService;
+
 
     @PostMapping
     public ResponseEntity<VideoDto> createVideo(@RequestBody VideoDto videoDto) {

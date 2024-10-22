@@ -37,3 +37,10 @@ info:
     version: "1.0"
 
 
+resilience4j.retry:
+  instances:
+    default:
+      maxAttempts: 3
+      waitDuration: 100
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 2

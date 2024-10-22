@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.nio.file.AccessDeniedException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +46,19 @@ public class GlobalExceptionHandler {
         CustomMessage customMessage = new CustomMessage();
         customMessage.setSuccess(false);
         customMessage.setMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(customMessage);
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<CustomMessage> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
+        CustomMessage customMessage = new CustomMessage();
+        customMessage.setSuccess(false);
+        if (ex.getMessage().toLowerCase().contains("duplicate entry")) {
+            customMessage.setMessage("User already there in database !!");
+        } else {
+            customMessage.setMessage(ex.getMessage());
+        }
+
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(customMessage);
     }
 }
