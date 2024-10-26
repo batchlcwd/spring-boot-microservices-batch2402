@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  springboot-app:
+    image: your-spring-boot-app-image:latest
+    container_name: springboot-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/mindup
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root_password
+    depends_on:
+      - mysql-db
+
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: mindup
+    ports:
+      - "3309:3306"
+    volumes:
+      - ./db-data:/var/lib/mysql
+
+volumes:
+  docker-uploads:
+  db-data:
+
