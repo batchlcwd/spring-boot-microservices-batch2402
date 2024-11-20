@@ -1,6 +1,6 @@
 spring:
   config:
-    import: "configserver:http://localhost:9094/"
+    import: "optional:configserver:http://localhost:9094/"
   application:
     name: course-service
   datasource:

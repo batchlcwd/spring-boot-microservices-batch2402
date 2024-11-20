@@ -118,6 +118,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<image>
+						<name>batchlcwd/${project.artifactId}:v2</name>
+					</image>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>

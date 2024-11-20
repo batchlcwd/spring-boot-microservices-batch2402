@@ -11,6 +11,7 @@
 	<groupId>com.notification.service</groupId>
 	<artifactId>notification-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>notification-service</name>
 	<description>This is notification service created with spring cloud functions</description>
 	<url/>

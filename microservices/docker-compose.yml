@@ -3,32 +3,208 @@
 version: '3.8'
 
 services:
-  mysql-db: #name of service
+  #notification-service
+  notification:
+    image: "batchlcwd/notification-service:v2"
+    container_name: notification_ms
+    ports:
+      - "9888:9888"
+    environment:
+      - SERVER_PORT=9888
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka:8085
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
+    networks:
+      - backend
+    depends_on:
+      - kafka
+      - discovery
+
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+  #order - service        
+  order:
+    image: "batchlcwd/order-service:v2"
+    container_name: order_ms
+    ports:
+      - "9098:9098"
+    networks:
+      - backend
+    environment:
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka:8085
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    depends_on:
+      - kafka
+      - discovery
+  #category-service
+
+  category:
+    image: "batchlcwd/category-service:v2"
+    container_name: category_ms
+    ports:
+      - "9091:9091"
+    networks:
+      - backend
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/categorydb
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=user123
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:9094/
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+    depends_on:
+      - mysql-db
+      - discovery
+      - config-server
+      - rabbitmq
+
+  #course -service
+  course:
+    image: "batchlcwd/course-service:v2"
+    container_name: course_ms
+    ports:
+      - "9092:9092"
+
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/coursedb
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=user123
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:9094/
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    networks:
+      - backend
+    depends_on:
+      - postgres-db
+      - discovery
+      - config-server
+      - rabbitmq
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+  #video-service
+  video:
+    image: "batchlcwd/video-service:v2"
+    container_name: video_ms
+    ports:
+      - "9093:9093"
+    depends_on:
+      - config-server
+      - discovery
+      - mongo
+    environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:9094/
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
+      - SPRING_DATA_MONGO_HOST=mongo
+      - SPRING_DATA_MONGO_PORT=27017
+      - SPRING_DATA_MONGO_DATABASE=videodb
+    networks:
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+
+  #config-server
+  config-server:
+    image: "batchlcwd/config-server:v2"
+    container_name: config_ms
+    ports:
+      - "9094:9094"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    depends_on:
+      - discovery
+      - rabbitmq
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - backend
+
+  #discovery-service
+  discovery:
+    image: "batchlcwd/discovery-service:v2"
+    container_name: discovery_ms
+    ports:
+      - "8761:8761"
+    networks:
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+  #api-gateway
+  gateway:
+    image: "batchlcwd/gateway-service:v2"
+    container_name: gateway_ms
+    ports:
+      - "9090:9090"
+    networks:
+      - backend
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
+    depends_on:
+      - discovery
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+  mysql-db:
+    #name of service
     image: mysql:8.0
-    container_name: mysql-container 
+    container_name: mysql-container
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: categorydb
       MYSQL_USER: user
-      MYSQL_PASSWORD: user123 
+      MYSQL_PASSWORD: user123
     ports:
-     - "3307:3306"
+      - "3307:3306"
     volumes:
       - ./mysql-data:/var/lib/mysql
+    networks:
+      - backend
 
-# php my admin service: db client
+  # php my admin service: db client
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: phpmyadmin
     environment:
-      PMA_HOST: mysql-db     
+      PMA_HOST: mysql-db
     ports:
       - "8081:80"
     depends_on:
       - mysql-db
+    networks:
+      - backend
 
-
-# PostgreSQL Service
+  # PostgreSQL Service
   postgres-db:
     image: postgres:13
     container_name: postgres-db
@@ -40,6 +216,8 @@ services:
       - "5432:5432"
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - backend
 
   # pgAdmin for PostgreSQL
   pgadmin:
@@ -52,15 +230,19 @@ services:
       - "8082:80"
     depends_on:
       - postgres-db
+    networks:
+      - backend
 
   # MongoDB Service
   mongo:
     image: mongo:latest
     container_name: mongo
     ports:
-      - "27017:27017"    
+      - "27017:27017"
     volumes:
       - ./mongo-data:/data/db
+    networks:
+      - backend
 
   # Mongo Express for MongoDB
   mongo-express:
@@ -68,14 +250,76 @@ services:
     container_name: mongo-express
     ports:
       - "8083:8081"
-    environment:        
+    environment:
       ME_CONFIG_MONGODB_SERVER: mongo
       # MONGO_INITDB_DATABASE: videodb
     depends_on:
       - mongo
+    networks:
+      - backend
+
+  #redis image
+  redis:
+    image: redis:latest
+    container_name: redis_container
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+  #rabbitmq
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_container
+    ports:
+      - "5672:5672" # RabbitMQ message broker port
+      - "15672:15672" # RabbitMQ management dashboard port
+    environment:
+      RABBITMQ_DEFAULT_USER: guest # Default username
+      RABBITMQ_DEFAULT_PASS: guest # Default password
+      RABBITMQ_DEFAULT_VHOST: "/" # Default virtual host
+    networks:
+      - backend
+
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq # Persist RabbitMQ data
+
+  #apache kafka
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.2.1
+    container_name: zookeeper_container
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181" # Zookeeper client port
+    networks:
+      - backend
+
+  kafka:
+    image: confluentinc/cp-kafka:7.2.1
+    container_name: kafka
+    ports:
+      - "8085:8085" # Kafka broker port
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:8085
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    networks:
+      - backend
 
 volumes:
   mysql-data:
   postgres-data:
   mongo-data:
+  rabbitmq_data:
 
+
+networks:
+  backend:
+    driver: "bridge"
+    name: backend

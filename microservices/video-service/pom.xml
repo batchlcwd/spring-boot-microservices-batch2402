@@ -6,11 +6,13 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.4</version>
+
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.service.video</groupId>
 	<artifactId>video-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>video-service</name>
 	<description>This is video service</description>
 	<url/>
@@ -76,7 +78,8 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<version>1.18.36</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -117,6 +120,16 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.4</version>
+				<configuration>
+					<to>
+						<image>batchlcwd/${project.artifactId}:v2</image>
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>

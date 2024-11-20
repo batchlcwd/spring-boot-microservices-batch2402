@@ -16,7 +16,7 @@ public class JwtUtil {
     private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
 
-    private long jwtExpiration = 5 * 60 * 1000;
+    private long jwtExpiration = 5 * 24 * 60 * 60 * 1000;
 
     //extract username from token
     public String extractUsername(String token) {

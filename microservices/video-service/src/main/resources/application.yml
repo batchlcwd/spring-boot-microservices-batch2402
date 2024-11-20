@@ -14,7 +14,7 @@ spring:
       port: 27017
       database: videodb
   config:
-    import: "configserver:http://localhost:9094/"
+    import: "optional:configserver:http://localhost:9094/"
 
 eureka:
   client:

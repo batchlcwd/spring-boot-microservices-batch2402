@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  notification:
+    image: "batchlcwd/notification-service:v2"
+    container_name: notification_ms
+    ports:
+      - "9888:9888"
+    environment:
+      - SERVER_PORT=9888
+    networks:
+      - backend
+
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+  
+  order:
+    image: "batchlcwd/order-service:v2"
+    container_name: order_ms
+    ports:
+      - "9098:9098"
+    networks:
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+
+networks:
+  backend:
+    driver: "bridge"
