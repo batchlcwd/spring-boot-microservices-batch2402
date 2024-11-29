@@ -1,3 +1,7 @@
 microservices/mongo-data/* 
 microservices/mysql-data/* 
 microservices/postgres-data/* 
+microservices/category-service/uploads/* 
+microservices/product-service/uploads/* 
+microservices/review-service/uploads/* 
+microservices/user-service/uploads/*    
