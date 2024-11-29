@@ -16,6 +16,7 @@ public interface CourseRepo extends JpaRepository<Course,String> {
 
     List<Course> findByTitleContainingIgnoreCaseOrShortDescContainingIgnoreCase(String keyword, String keyword1);
 
+    List<Course> findByCategoryId(String categoryId);
     // search the course by title
 
 //    @Query("select c from Course c where c.category.i")

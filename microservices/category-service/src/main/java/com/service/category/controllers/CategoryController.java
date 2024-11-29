@@ -11,14 +11,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/v1/categories")public class CategoryController {
+@RequestMapping("/api/v1/categories")
+public class CategoryController {
 
     private CategoryService categoryService;
+
     //category: create
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
+
+
+    //crate: category
     @PostMapping
     public ResponseEntity<?> create(
             @Valid @RequestBody CategoryDto categoryDto
@@ -50,6 +57,7 @@ import org.springframework.web.bind.annotation.*;
         return categoryService.getAll(pageNumber, pageSize, sortBy);
 
     }
+
     // single category
     @GetMapping("/{categoryId}")
     public CategoryDto getSingle(
@@ -63,8 +71,7 @@ import org.springframework.web.bind.annotation.*;
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<CustomMessage> delete(
             @PathVariable String categoryId
-    )
-    {
+    ) {
         categoryService.delete(categoryId);
         CustomMessage customMessage = new CustomMessage();
         customMessage.setMessage("Category deleted !!");
@@ -96,6 +103,13 @@ import org.springframework.web.bind.annotation.*;
         return ResponseEntity.ok(customMessage);
     }
 
+    //search
+    @GetMapping("/search")
+    public List<CategoryDto> searchCategory(
+            @RequestParam("q") String q
+    ) {
+        return this.categoryService.search(q);
+    }
 
 
 }

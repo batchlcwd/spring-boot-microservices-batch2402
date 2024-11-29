@@ -3,6 +3,8 @@ package com.service.category.services;
 import com.service.category.dto.CategoryDto;
 import com.service.category.dto.CustomPageResponse;
 
+import java.util.List;
+
 public interface CategoryService {
 
     //create
@@ -22,6 +24,7 @@ public interface CategoryService {
 
     public void addCourseToCategory(String catId, String course);
 
+    List<CategoryDto> search(String keyword);
 
 
 }

@@ -12,12 +12,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
-public class CategoryServiceImpl implements  CategoryService{
+public class CategoryServiceImpl implements CategoryService {
 
 
     private CategoryRepo repo;
@@ -25,7 +27,7 @@ public class CategoryServiceImpl implements  CategoryService{
 
     private ModelMapper modelMapper;
 
-    public CategoryServiceImpl(CategoryRepo repo,  ModelMapper modelMapper) {
+    public CategoryServiceImpl(CategoryRepo repo, ModelMapper modelMapper) {
         this.repo = repo;
 
         this.modelMapper = modelMapper;
@@ -83,6 +85,7 @@ public class CategoryServiceImpl implements  CategoryService{
         Category category = repo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category Not found !!"));
         category.setTitle(categoryDto.getTitle());
         category.setDesc(categoryDto.getDesc());
+        category.setBannerImageUrl(categoryDto.getBannerImageUrl());
         Category savedCategory = repo.save(category);
         return modelMapper.map(savedCategory, CategoryDto.class);
     }
@@ -90,6 +93,16 @@ public class CategoryServiceImpl implements  CategoryService{
     @Override
     public void addCourseToCategory(String catId, String course) {
 
+    }
+
+    @Override
+    public List<CategoryDto> search(String keyword) {
+        if(keyword.isBlank())
+        {
+            return new ArrayList<>();
+
+        }
+        return this.repo.findByTitleContainingIgnoreCaseOrDescContainingIgnoreCase(keyword, keyword).stream().map(cat -> modelMapper.map(cat, CategoryDto.class)).collect(Collectors.toList());
     }
 
 

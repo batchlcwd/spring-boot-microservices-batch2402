@@ -16,7 +16,6 @@ public class Video
     private String desc;
     private String filePath;
     private String contentType;
-
     private  String courseId;
 
 }

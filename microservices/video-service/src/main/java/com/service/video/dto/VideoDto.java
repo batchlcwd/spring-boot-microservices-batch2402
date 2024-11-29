@@ -10,5 +10,5 @@ public class VideoDto {
     private String filePath;
     private String contentType;
     private  String courseId;
-    private  CourseDto course;
+
 }

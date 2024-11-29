@@ -34,11 +34,14 @@ public class CourseController {
     }
 
 
+    //course create
     @PostMapping
     public ResponseEntity<CourseDto> createCourse(@RequestBody CourseDto courseDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(courseService.createCourse(courseDto));
     }
 
+
+    //course update
     @PutMapping("/{id}")
 
 
@@ -49,9 +52,8 @@ public class CourseController {
     }
 
 
-
-
-    @Retry(name = "getSingleCourseRetry",fallbackMethod = "singleCourseRetryFallback")
+    //single course get:
+    @Retry(name = "getSingleCourseRetry", fallbackMethod = "singleCourseRetryFallback")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
     public ResponseEntity<CourseDto> getCourseById(@PathVariable String id) {
@@ -59,24 +61,29 @@ public class CourseController {
     }
 
 
-    public ResponseEntity<CourseDto> singleCourseRetryFallback(Throwable ex){
+    public ResponseEntity<CourseDto> singleCourseRetryFallback(Throwable ex) {
         CourseDto courseDto = new CourseDto();
-        courseDto.setTitle("This is dummy course");
-        courseDto.setShortDesc("This is dummy course return while fallback");
-        return  ResponseEntity.ok(courseDto);
+        courseDto.setTitle("Spring Boot Latest Course");
+        courseDto.setShortDesc("This is very latest course running by Aayush Sharma.");
+
+        return ResponseEntity.ok(courseDto);
     }
+
+    //all courses
 
     @GetMapping
     public ResponseEntity<Page<CourseDto>> getAllCourses(Pageable pageable) {
         return ResponseEntity.ok(courseService.getAllCourses(pageable));
     }
 
+    //delete single course
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCourse(@PathVariable String id) {
         courseService.deleteCourse(id);
         return ResponseEntity.noContent().build();
     }
 
+    //search course
     @GetMapping("/search")
     public ResponseEntity<List<CourseDto>> searchCourses(
             @RequestParam String keyword) {
@@ -87,6 +94,7 @@ public class CourseController {
     // going to create one banner[image upload api]
 
 
+    //banner upload url
     @PostMapping("/{courseId}/banners")
     public ResponseEntity<?> uploadBanner(
             @PathVariable String courseId,
@@ -122,19 +130,19 @@ public class CourseController {
     // serve banner
     @GetMapping("/{courseId}/banners")
     public ResponseEntity<Resource> serverBanner(
-            @PathVariable String courseId,
-            @RequestHeader("Content-Type") String contentType,
-            HttpServletRequest request,
-            HttpServletResponse response,
-            HttpSession session,
-            ServletContext context
+            @PathVariable String courseId
+//            @RequestHeader("Content-Type") String contentType,
+//            HttpServletRequest request,
+//            HttpServletResponse response,
+//            HttpSession session,
+//            ServletContext context
     ) {
 
 
         //
-
-        System.out.println(request.getContextPath());
-        System.out.println(request.getPathInfo());
+//
+//        System.out.println(request.getContextPath());
+//        System.out.println(request.getPathInfo());
 
 //        Enumeration<String> headerNames = request.getHeaderNames();
 //        while (headerNames.hasMoreElements())
@@ -150,5 +158,11 @@ public class CourseController {
                 .ok().contentType(MediaType.parseMediaType(resourceContentType.getContentType()))
                 .body(resourceContentType.getResource());
 
+    }
+    //get all courses of category
+    //api/v1/courses/category/35235235
+    @GetMapping("/category/{categoryId}")
+    public List<CourseDto> getCourseOfCategory(@PathVariable String categoryId){
+        return courseService.getCoursesOfCategory(categoryId);
     }
 }

@@ -1,6 +1,10 @@
 server:
   port: 9093
 spring:
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
   cloud:
     openfeign:
       circuitbreaker:
@@ -31,7 +35,7 @@ management:
 info:
   app:
     name: "video-service"
-    description:  "This is video service"
+    description: "This is video service"
     version: "1.0"
 
 
@@ -44,4 +48,11 @@ resilience4j:
         permitted-number-of-calls-in-half-open-state: 2
         failure-rate-threshold: 50
         wait-duration-in-open-state: 1000
+
+
+video:
+  upload:
+    path: "uploads/videos"
+
+
 

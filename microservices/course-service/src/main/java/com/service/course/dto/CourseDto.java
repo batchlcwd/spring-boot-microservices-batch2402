@@ -44,11 +44,8 @@ public class CourseDto {
 
     }
 
-
     private String categoryId;
-
     private  CategoryDto categoryDto;
-
     private List<VideoDto> videos;
 
 

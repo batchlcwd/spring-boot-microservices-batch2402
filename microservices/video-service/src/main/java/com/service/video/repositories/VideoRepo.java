@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface VideoRepo extends MongoRepository<Video, String> {
     List<Video> findByTitleContainingIgnoreCaseOrDescContainingIgnoreCase(String keyword, String desc);
-
     List<Video> findByCourseId(String courseId);
 }

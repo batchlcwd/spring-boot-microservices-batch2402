@@ -127,19 +127,19 @@ public class CourseController {
     // serve banner
     @GetMapping("/{courseId}/banners")
     public ResponseEntity<Resource> serverBanner(
-            @PathVariable String courseId,
-            @RequestHeader("Content-Type") String contentType,
-            HttpServletRequest request,
-            HttpServletResponse response,
-            HttpSession session,
-            ServletContext context
+            @PathVariable String courseId
+//
+//            HttpServletRequest request,
+//            HttpServletResponse response,
+//            HttpSession session,
+//            ServletContext context
     ) {
 
 
         //
 
-        System.out.println(request.getContextPath());
-        System.out.println(request.getPathInfo());
+//        System.out.println(request.getContextPath());
+//        System.out.println(request.getPathInfo());
 
 //        Enumeration<String> headerNames = request.getHeaderNames();
 //        while (headerNames.hasMoreElements())
@@ -151,6 +151,7 @@ public class CourseController {
 
         ResourceContentType resourceContentType = courseService.getCourseBannerById(courseId);
 
+        System.out.println("Testing");
         return ResponseEntity
                 .ok().contentType(MediaType.parseMediaType(resourceContentType.getContentType()))
                 .body(resourceContentType.getResource());

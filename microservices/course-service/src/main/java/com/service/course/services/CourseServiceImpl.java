@@ -79,8 +79,16 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseDto updateCourse(String id, CourseDto courseDto) {
         Course course = courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course not found"));
-        modelMapper.map(courseDto, course);
+
         //one by one
+        course.setTitle(courseDto.getTitle());
+        course.setShortDesc(courseDto.getShortDesc());
+        course.setLongDesc(courseDto.getLongDesc());
+        course.setPrice(courseDto.getPrice());
+        course.setLive(courseDto.isLive());
+        course.setDiscount(courseDto.getDiscount());
+        course.setCategoryId(courseDto.getCategoryId());
+
         Course updatedCourse = courseRepository.save(course);
         return modelMapper.map(updatedCourse, CourseDto.class);
     }
@@ -91,12 +99,11 @@ public class CourseServiceImpl implements CourseService {
     public CourseDto getCourseById(String id) {
         Course course = courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course not found"));
         // get category detail of the course
-
         CourseDto courseDto = modelMapper.map(course, CourseDto.class);
-        //load category of the video [Category Service]
+        //load category of the course [Category Service]
         courseDto.setCategoryDto(getCategoryOfCourse(course.getCategoryId()));
-        //load[Video Services] video services to load videos of this course
-        courseDto.setVideos(getVideosOfCourse(course.getId()));
+        //call[Video Services] video services to load videos of this course
+        //courseDto.setVideos(getVideosOfCourse(course.getId()));
         return courseDto;
     }
 
@@ -112,7 +119,7 @@ public class CourseServiceImpl implements CourseService {
                     CourseDto dto = modelMapper.map(course, CourseDto.class);
                     dto.setCategoryDto(getCategoryOfCourse(dto.getCategoryId()));
                     //load videos of all current course [Video Service]
-                    dto.setVideos(getVideosOfCourse(dto.getId()));
+//                    dto.setVideos(getVideosOfCourse(dto.getId()));
                     return dto;
                 })
                 .collect(Collectors.toList());
@@ -166,7 +173,7 @@ public class CourseServiceImpl implements CourseService {
             CourseDto dto = modelMapper.map(course, CourseDto.class);
             dto.setCategoryDto(getCategoryOfCourse(dto.getCategoryId()));
             //load videos of searched course[Video Service]
-            dto.setVideos(getVideosOfCourse(dto.getId()));
+//            dto.setVideos(getVideosOfCourse(dto.getId()));
             return dto;
 
         }).collect(Collectors.toList());
@@ -193,6 +200,11 @@ public class CourseServiceImpl implements CourseService {
         return resourceContentType;
     }
 
+    @Override
+    public List<CourseDto> getCoursesOfCategory(String categoryId) {
+        return this.courseRepository.findByCategoryId(categoryId).stream().map(course -> modelMapper.map(course, CourseDto.class)).collect(Collectors.toList());
+    }
+
     // api call for loading category using category id
 //    [Rest Template]
     public CategoryDto getCategoryOfCourse(String categoryId) {
@@ -211,16 +223,15 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
-        // call video-service to get videos of course
-        public List<VideoDto> getVideosOfCourse(String courseId)
-        {
-            return webClient.build().
-                    get()
-                    .uri(AppConstants.VIDEO_SERVICE_BASE_URL + "/videos/course/{id}", courseId)
-                    .retrieve()
-                    .bodyToFlux(VideoDto.class)
-                    .collectList()
-                    .block();
-        }
+    // call video-service to get videos of course
+    public List<VideoDto> getVideosOfCourse(String courseId) {
+        return webClient.build().
+                get()
+                .uri(AppConstants.VIDEO_SERVICE_BASE_URL + "/videos/course/{id}", courseId)
+                .retrieve()
+                .bodyToFlux(VideoDto.class)
+                .collectList()
+                .block();
     }
+}
 

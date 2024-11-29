@@ -36,4 +36,6 @@ public interface CourseService {
 
 
     ResourceContentType getCourseBannerById(String courseId);
+
+    List<CourseDto> getCoursesOfCategory(String categoryId);
 }
