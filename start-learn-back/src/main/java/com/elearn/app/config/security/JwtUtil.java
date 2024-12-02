@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
@@ -13,10 +14,11 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    //    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final Key key = Keys.hmacShaKeyFor("aghkhbabfhaihfldwaafafasfASfasfASfafgafbaoifgwqbfvasfgpagfifgaipfgaosifhasfgapg".getBytes(StandardCharsets.UTF_8));
 
 
-    private long jwtExpiration = 5 * 24 * 60 * 60 * 1000;
+    private final long jwtExpiration = 18000000;
 
     //extract username from token
     public String extractUsername(String token) {

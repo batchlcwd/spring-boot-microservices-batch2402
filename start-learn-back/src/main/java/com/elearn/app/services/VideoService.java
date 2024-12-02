@@ -13,4 +13,6 @@ public interface VideoService {
     Page<VideoDto> getAllVideos(Pageable pageable);
     void deleteVideo(String videoId);
     List<VideoDto> searchVideos(String keyword);
+    List<VideoDto> getVideoOfCourse(String courseId);
+
 }

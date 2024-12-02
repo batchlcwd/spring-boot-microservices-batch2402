@@ -46,13 +46,8 @@ public class CourseDto {
 
     private String banner;
 
-//    private  String categoryId;
+    //private  String categoryId;
 
-    //    videos
-
-    private List<VideoDto> videos = new ArrayList<>();
-
-    //
 
     private List<CategoryDto> categoryList = new ArrayList<>();
 
