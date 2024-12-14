@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,7 +54,7 @@ public class CourseDto {
 
     public String getBannerUrl() {
 
-        return "http://localhost:8081/api/v1/courses/" + id + "/banners";
+        return ServletUriComponentsBuilder.fromCurrentContextPath().build().toString() + "/api/v1/courses/" + id + "/banners";
 
     }
 

@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,9 +72,15 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getCourseById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<Page<CourseDto>> getAllCourses(Pageable pageable) {
+    public ResponseEntity<Page<CourseDto>> getAllCourses(Pageable pageable) throws InterruptedException {
         return ResponseEntity.ok(courseService.getAllCourses(pageable));
+    }
+
+    @GetMapping("/live")
+    public ResponseEntity<Page<CourseDto>> getAllCoursesLive(Pageable pageable) throws InterruptedException {
+        return ResponseEntity.ok(courseService.getAllCoursesLive(pageable));
     }
 
     @DeleteMapping("/{id}")

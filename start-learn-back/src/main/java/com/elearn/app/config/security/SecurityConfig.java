@@ -1,6 +1,7 @@
 package com.elearn.app.config.security;
 
 
+import com.elearn.app.config.CustomAuthenticationEntryPoint;
 import com.elearn.app.dtos.CustomMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,12 +38,12 @@ import java.util.List;
 public class SecurityConfig {
 
 
-    private AuthenticationEntryPoint authenticationEntryPoint;
+    private CustomAuthenticationEntryPoint authenticationEntryPoint;
 
     private JwtAuthenticationFilter authenticationFilter;
 
 
-    public SecurityConfig(AuthenticationEntryPoint authenticationEntryPoint, JwtAuthenticationFilter authenticationFilter) {
+    public SecurityConfig(CustomAuthenticationEntryPoint authenticationEntryPoint, JwtAuthenticationFilter authenticationFilter) {
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.authenticationFilter = authenticationFilter;
     }
@@ -113,7 +114,7 @@ public class SecurityConfig {
         httpSecurity.cors(cor -> {
             CorsConfiguration config = new CorsConfiguration();
 //            config.addAllowedOrigin("http://localhost:5173");
-            config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:4200"));
+            config.addAllowedOriginPattern("*");
             config.addAllowedMethod("*");
             config.addAllowedHeader("*");
             config.setAllowCredentials(true);

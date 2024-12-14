@@ -18,12 +18,8 @@ public class VideoDto
     private String desc;
     private String filePath;
     private String contentType;
-
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private  CourseDto course;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private  String courseId;
+
 
 }

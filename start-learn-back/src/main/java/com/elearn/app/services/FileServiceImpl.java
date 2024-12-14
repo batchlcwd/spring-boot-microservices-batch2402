@@ -12,6 +12,23 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class FileServiceImpl implements FileService {
     @Override
+    public boolean deleteCourseBannerIfExists(String path) {
+
+
+        Path path1 = Paths.get(path);
+        if(Files.exists(path1)){
+            try {
+                Files.delete(path1);
+                return true;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return false;
+    }
+
+    @Override
     public String save(MultipartFile file, String outputPath, String filename) throws IOException {
 
 

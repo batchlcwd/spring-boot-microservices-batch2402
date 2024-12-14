@@ -34,8 +34,8 @@ public class VideoServiceImpl implements VideoService {
     public VideoDto createVideo(VideoDto videoDto) {
         videoDto.setId(UUID.randomUUID().toString());
         Video video = modelMapper.map(videoDto, Video.class);
-        System.out.println(videoDto.getCourseId());
-        Course course = courseRepo.findById(videoDto.getCourseId()).orElse(null);
+//        System.out.println(videoDto.getCourse().getId());
+        Course course = courseRepo.findById(videoDto.getCourse().getId()).orElse(null);
         System.out.println(course);
         course.getVideos().add(video);
         video.setCourse(course);
@@ -51,7 +51,7 @@ public class VideoServiceImpl implements VideoService {
         video.setDesc(videoDto.getDesc());
         video.setFilePath(videoDto.getFilePath());
         video.setContentType(videoDto.getContentType());
-        Course course = courseRepo.findById(videoDto.getCourseId()).orElse(null);
+        Course course = courseRepo.findById(videoDto.getCourse().getId()).orElse(null);
         video.setCourse(course);
         Video updatedVideo = videoRepository.save(video);
         return modelMapper.map(updatedVideo, VideoDto.class);

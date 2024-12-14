@@ -61,4 +61,12 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(customMessage);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<CustomMessage> handleGenericException(Exception ex) {
+        CustomMessage message = new CustomMessage();
+        message.setMessage("An error occurred: " + ex.getMessage());
+        message.setSuccess(false);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
+    }
 }

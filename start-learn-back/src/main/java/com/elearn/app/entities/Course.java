@@ -20,7 +20,8 @@ public class Course {
 
     private String shortDesc;
 
-    @Column(length = 2000)
+    @Lob
+    @Column(length = 2000,columnDefinition = "TEXT")
     private String longDesc;
 
     private double price;

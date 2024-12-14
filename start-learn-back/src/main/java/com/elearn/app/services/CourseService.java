@@ -37,4 +37,6 @@ public interface CourseService {
 
 
     ResourceContentType getCourseBannerById(String courseId);
+
+    Page<CourseDto> getAllCoursesLive(Pageable pageable);
 }

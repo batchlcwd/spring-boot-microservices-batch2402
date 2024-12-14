@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -45,20 +43,22 @@ public class User {
 
     private String recentOTP;
 
-    @ManyToMany(mappedBy = "users",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
 
-    public void assignRole(Role role)
-    {
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
+
+    public void assignRole(Role role) {
         this.roles.add(role);
         role.getUsers().add(this);
     }
 
-    public void removeRole(Role role){
+    public void removeRole(Role role) {
         this.roles.remove(role);
         role.getUsers().remove(this);
     }
-
 
 
 }
